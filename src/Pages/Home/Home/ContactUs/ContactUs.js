@@ -9,7 +9,7 @@ const ContactUs = () => {
                 background: `url(${appointment})`
             }}
         >
-            <div className="hero-content">
+            <div className="hero-content mt-5">
                 <div>
                     <div className='text-center'>
                         <h4 className='text-xl text-primary font-bold'>Contact Us</h4>
@@ -20,7 +20,7 @@ const ContactUs = () => {
                         <input type="text" placeholder="Subject" className="input input-bordered w-full mt-5" />
                         <textarea className="textarea textarea-bordered w-full mt-5" placeholder="Your message"></textarea>
                     </div>
-                    <div className="mt-5 text-center">
+                    <div className="mt-5 text-center mb-5">
                         <PrimaryButton>Get Started</PrimaryButton>
                     </div>
                 </div>
