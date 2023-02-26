@@ -1,5 +1,5 @@
 import React from 'react';
-import Home from '../Pages/Home/Home/Home';
+import { Outlet } from 'react-router-dom';
 import Footer from '../Pages/Shared/Footer/Footer';
 import Navbar from '../Pages/Shared/Navbar/Navbar';
 
@@ -7,7 +7,7 @@ const Main = () => {
     return (
         <div>
             <Navbar />
-            <Home />
+            <Outlet></Outlet>
             <Footer />
         </div>
     );
