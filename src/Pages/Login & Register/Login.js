@@ -1,11 +1,15 @@
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { AuthContext } from '../../Contexts/AuthProvider';
 
 const Login = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
     const [open, setOpen] = useState(false);
+    const [loginError, setLoginError] = useState('');
+
+    const { signIn } = useContext(AuthContext);
 
     const toggleBtn = () => {
         setOpen(!open);
@@ -13,6 +17,18 @@ const Login = () => {
 
     const handleLogin = data => {
         console.log(data);
+
+        setLoginError('');
+
+        signIn(data.email, data.password)
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+            })
+            .catch(error => {
+                console.log(error.message);
+                setLoginError(error.message);
+            });
     }
 
     return (
@@ -47,10 +63,10 @@ const Login = () => {
                                         required: "Password is required",
                                         maxLength: { value: 8, message: "Password must be 6-8 character" },
                                         minLength: { value: 6, message: "Password must be 6-8 character" },
-                                        pattern: {
+                                        /* pattern: {
                                             value: /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])$/,
                                             message: "Password must be Strong"
-                                        }
+                                        } */
                                     })}
                                     placeholder="●●●●●●●●"
                                     className="input input-accent w-full max-w-max md:max-w-xs lg:max-w-xs absolute"

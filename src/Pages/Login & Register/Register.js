@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-
+import { AuthContext } from '../../Contexts/AuthProvider';
 const Register = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
+
+    const { createUser } = useContext(AuthContext);
 
     // Show and hide password
     const [openPassword, setOpenPassword] = useState(false);
@@ -21,6 +23,12 @@ const Register = () => {
     const handleRegister = data => {
         if (data.password === data.confirmPassword) {
             console.log(data);
+            createUser(data.email, data.password)
+                .then(result => {
+                    const user = result.user;
+                    console.log(user);
+                })
+                .catch(error => console.log(error))
         } else {
             console.log("Password & Confirm Password must be same");
         }
@@ -73,10 +81,10 @@ const Register = () => {
                                         required: "Password is required",
                                         maxLength: { value: 8, message: "Password must be 6-8 character" },
                                         minLength: { value: 6, message: "Password must be 6-8 character" },
-                                        pattern: {
+                                        /* pattern: {
                                             value: /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])$/,
                                             message: "Password must be Strong"
-                                        }
+                                        } */
                                     })}
                                     placeholder="●●●●●●●●"
                                     className="input input-accent w-full max-w-max md:max-w-xs lg:max-w-xs absolute"
@@ -115,10 +123,10 @@ const Register = () => {
                                         required: "Password is required",
                                         maxLength: { value: 8, message: "Password must be 6-8 character" },
                                         minLength: { value: 6, message: "Password must be 6-8 character" },
-                                        pattern: {
+                                        /* pattern: {
                                             value: /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])$/,
                                             message: "Password must be Strong"
-                                        }
+                                        } */
                                     })}
                                     placeholder="●●●●●●●●"
                                     className="input input-accent w-full max-w-max md:max-w-xs lg:max-w-xs absolute"
