@@ -46,13 +46,17 @@ const Login = () => {
                                     {...register("password", {
                                         required: "Password is required",
                                         maxLength: { value: 8, message: "Password must be 6-8 character" },
-                                        minLength: { value: 6, message: "Password must be 6-8 character" }
+                                        minLength: { value: 6, message: "Password must be 6-8 character" },
+                                        pattern: {
+                                            value: /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])$/,
+                                            message: "Password must be Strong"
+                                        }
                                     })}
                                     placeholder="●●●●●●●●"
-                                    className="input input-accent w-full max-w-max lg:max-w-xs absolute"
+                                    className="input input-accent w-full max-w-max md:max-w-xs lg:max-w-xs absolute"
                                 />
                             </div>
-                            <div className='input grid place-content-center w-1/6 border border-accent border-l-0 lg:border-r-0 rounded-l-none relative'>
+                            <div className='input grid place-content-center w-1/6 border border-accent border-l-0 md:border-r-0 lg:border-r-0 rounded-l-none relative'>
                                 {
                                     (open === false)
                                         ?
