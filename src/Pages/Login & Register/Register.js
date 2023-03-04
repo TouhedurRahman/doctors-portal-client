@@ -3,14 +3,16 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { AuthContext } from '../../Contexts/AuthProvider';
+import { toast } from 'react-hot-toast';
 const Register = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
 
-    const { createUser } = useContext(AuthContext);
+    const { createUser, updateUser } = useContext(AuthContext);
 
     // Show and hide password
     const [openPassword, setOpenPassword] = useState(false);
     const [openConfirmPassword, setOpenConfirmPassword] = useState(false);
+    const [registerError, setRegisterError] = useState('');
 
     const toggleBtnPassword = () => {
         setOpenPassword(!openPassword);
@@ -23,10 +25,22 @@ const Register = () => {
     const handleRegister = data => {
         if (data.password === data.confirmPassword) {
             console.log(data);
+            setRegisterError('');
             createUser(data.email, data.password)
                 .then(result => {
                     const user = result.user;
                     console.log(user);
+                    toast.success('User Created Successfully');
+                    const userInfo = {
+                        diplayName: data.name
+                    }
+                    updateUser(userInfo)
+                        .then(() => {
+                            // Profile updated!
+                            // ...
+                        }).catch((error) => {
+                            setRegisterError(error.message);
+                        });
                 })
                 .catch(error => console.log(error))
         } else {
@@ -95,11 +109,13 @@ const Register = () => {
                                     (openPassword === false)
                                         ?
                                         <AiFillEyeInvisible
+                                            style={{ cursor: "pointer" }}
                                             className='w-full text-4xl'
                                             onClick={toggleBtnPassword}
                                         />
                                         :
                                         <AiFillEye
+                                            style={{ cursor: "pointer" }}
                                             className='w-full text-4xl'
                                             onClick={toggleBtnPassword}
                                         />
@@ -137,11 +153,13 @@ const Register = () => {
                                     (openConfirmPassword === false)
                                         ?
                                         <AiFillEyeInvisible
+                                            style={{ cursor: "pointer" }}
                                             className='w-full text-4xl'
                                             onClick={toggleBtnConfirmPassword}
                                         />
                                         :
                                         <AiFillEye
+                                            style={{ cursor: "pointer" }}
                                             className='w-full text-4xl'
                                             onClick={toggleBtnConfirmPassword}
                                         />

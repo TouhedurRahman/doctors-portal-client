@@ -1,13 +1,19 @@
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../../Contexts/AuthProvider';
+import { toast } from 'react-hot-toast';
 
 const Login = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
     const [open, setOpen] = useState(false);
     const [loginError, setLoginError] = useState('');
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const from = location.state?.from?.pathname || '/';
 
     const { signIn } = useContext(AuthContext);
 
@@ -24,6 +30,8 @@ const Login = () => {
             .then(result => {
                 const user = result.user;
                 console.log(user);
+                toast.success("Login Successfull");
+                navigate(from, { replace: true });
             })
             .catch(error => {
                 console.log(error.message);
@@ -77,11 +85,13 @@ const Login = () => {
                                     (open === false)
                                         ?
                                         <AiFillEyeInvisible
+                                            style={{ cursor: "pointer" }}
                                             className='w-full text-4xl'
                                             onClick={toggleBtn}
                                         />
                                         :
                                         <AiFillEye
+                                            style={{ cursor: "pointer" }}
                                             className='w-full text-4xl'
                                             onClick={toggleBtn}
                                         />
