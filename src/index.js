@@ -14,7 +14,7 @@ import {
   // useQueryClient,
   QueryClient,
   QueryClientProvider,
-} from 'react-query'
+} from '@tanstack/react-query'
 
 // Create a client
 const queryClient = new QueryClient()
