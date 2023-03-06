@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { AuthContext } from '../../Contexts/AuthProvider';
 import { toast } from 'react-hot-toast';
@@ -13,6 +13,7 @@ const Register = () => {
     const [openPassword, setOpenPassword] = useState(false);
     const [openConfirmPassword, setOpenConfirmPassword] = useState(false);
     const [registerError, setRegisterError] = useState('');
+    const navigate = useNavigate();
 
     const toggleBtnPassword = () => {
         setOpenPassword(!openPassword);
@@ -32,19 +33,19 @@ const Register = () => {
                     console.log(user);
                     toast.success('User Created Successfully');
                     const userInfo = {
-                        diplayName: data.name
+                        displayName: data.name
                     }
                     updateUser(userInfo)
                         .then(() => {
-                            // Profile updated!
-                            // ...
-                        }).catch((error) => {
+                            navigate('/');
+                        })
+                        .catch((error) => {
                             setRegisterError(error.message);
                         });
                 })
                 .catch(error => console.log(error))
         } else {
-            console.log("Password & Confirm Password must be same");
+            toast.error("Password & Confirm Password must be same");
         }
     }
 
