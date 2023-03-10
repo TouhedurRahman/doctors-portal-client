@@ -37,16 +37,33 @@ const Register = () => {
                     }
                     updateUser(userInfo)
                         .then(() => {
-                            navigate('/');
+                            saveUser(data.name, data.email);
                         })
                         .catch((error) => {
                             setRegisterError(error.message);
-                        });
+                        })
                 })
                 .catch(error => console.log(error))
         } else {
             toast.error("Password & Confirm Password must be same");
         }
+    }
+
+    const saveUser = (name, email) => {
+        const user = { name, email };
+
+        fetch('http://localhost:5000/users', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+            .then(res => res.json())
+            .then(data => {
+                // console.log('save user =>', data);
+                navigate('/');
+            })
     }
 
     return (

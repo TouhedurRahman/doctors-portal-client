@@ -12,10 +12,11 @@ const MyAppointment = () => {
             const data = await res.json();
             return data;
         }
-    })
+    });
+
     return (
         <div>
-            <h3 className='text-3xl mb-5'>My Appointments</h3>
+            <h3 className='text-3xl text-center text-primary font-bold m-5'><i>My Appointments</i></h3>
             <div className="overflow-x-auto">
                 <table className="table w-full">
                     <thead>
@@ -30,7 +31,7 @@ const MyAppointment = () => {
                     <tbody>
                         {
                             bookings.map((booking, i) =>
-                                <tr key={i}>
+                                <tr key={booking._id}>
                                     <th>{i + 1}</th>
                                     <td>{booking.patient}</td>
                                     <td>{booking.treatment}</td>
