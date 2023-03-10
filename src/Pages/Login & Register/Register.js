@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { AuthContext } from '../../Contexts/AuthProvider';
 import { toast } from 'react-hot-toast';
+import useToken from '../../hooks/useToken';
 const Register = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
 
@@ -13,6 +14,8 @@ const Register = () => {
     const [openPassword, setOpenPassword] = useState(false);
     const [openConfirmPassword, setOpenConfirmPassword] = useState(false);
     const [registerError, setRegisterError] = useState('');
+    const [userEmail, setUserEmail] = useState('');
+    const [token] = useToken(userEmail);
     const navigate = useNavigate();
 
     const toggleBtnPassword = () => {
@@ -21,6 +24,10 @@ const Register = () => {
 
     const toggleBtnConfirmPassword = () => {
         setOpenConfirmPassword(!openConfirmPassword);
+    }
+
+    if (token) {
+        navigate('/');
     }
 
     const handleRegister = data => {
@@ -62,9 +69,20 @@ const Register = () => {
             .then(res => res.json())
             .then(data => {
                 // console.log('save user =>', data);
-                navigate('/');
+                setUserEmail(email);
             })
     }
+
+    /* const getUserToken = email => {
+        fetch(`http://localhost:5000/jwt?email=${email}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.accessToken) {
+                    localStorage.setItem('accessToken', data.accessToken)
+                    navigate('/');
+                }
+            })
+    } */
 
     return (
         <div className='h-[800px] flex justify-center items-center'>

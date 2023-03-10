@@ -4,11 +4,14 @@ import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../../Contexts/AuthProvider';
 import { toast } from 'react-hot-toast';
+import useToken from '../../hooks/useToken';
 
 const Login = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
     const [open, setOpen] = useState(false);
     const [loginError, setLoginError] = useState('');
+    const [userEmail, setUserEmail] = useState('');
+    const [token] = useToken(userEmail);
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -21,6 +24,11 @@ const Login = () => {
         setOpen(!open);
     }
 
+    if (token) {
+        navigate(from, { replace: true });
+        toast.success("Login Successfull");
+    }
+
     const handleLogin = data => {
         console.log(data);
 
@@ -30,14 +38,26 @@ const Login = () => {
             .then(result => {
                 const user = result.user;
                 console.log(user);
-                toast.success("Login Successfull");
-                navigate(from, { replace: true });
+                setUserEmail(data.email);
+                // getUserToken(data.email);
             })
             .catch(error => {
                 console.log(error.message);
                 setLoginError(error.message);
             });
     }
+
+    /* const getUserToken = email => {
+        fetch(`http://localhost:5000/jwt?email=${email}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.accessToken) {
+                    localStorage.setItem('accessToken', data.accessToken);
+                    toast.success("Login Successfull");
+                    navigate(from, { replace: true });
+                }
+            })
+    } */
 
     return (
         <div className='h-[800px] flex justify-center items-center'>
