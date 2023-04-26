@@ -1,10 +1,11 @@
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../Contexts/AuthProvider';
 import { toast } from 'react-hot-toast';
 import useToken from '../../hooks/useToken';
+import Loading from '../Shared/Loading/Loading';
 
 const Login = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
@@ -18,16 +19,21 @@ const Login = () => {
 
     const from = location.state?.from?.pathname || '/';
 
-    const { signIn } = useContext(AuthContext);
+    const { signIn, loading } = useContext(AuthContext);
 
     const toggleBtn = () => {
         setOpen(!open);
     }
 
-    if (token) {
-        navigate(from, { replace: true });
-        toast.success("Login Successfull");
-    }
+    useEffect(() => {
+        if (loading) {
+            return <Loading />;
+        }
+        if (token) {
+            toast.success("Login Successfull");
+            navigate(from, { replace: true });
+        }
+    }, [from, navigate, loading, token]);
 
     const handleLogin = data => {
         console.log(data);
@@ -97,22 +103,22 @@ const Login = () => {
                                         } */
                                     })}
                                     placeholder="●●●●●●●●"
-                                    className="input input-accent w-full max-w-max md:max-w-xs lg:max-w-xs absolute"
+                                    className="input input-accent w-full max-w-max lg:max-w-xs absolute"
                                 />
                             </div>
-                            <div className='input grid place-content-center w-1/6 border border-accent border-l-0 md:border-r-0 lg:border-r-0 rounded-l-none relative'>
+                            <div className='input grid place-content-center w-1/6 h-10 m-1 relative'>
                                 {
                                     (open === false)
                                         ?
                                         <AiFillEyeInvisible
                                             style={{ cursor: "pointer" }}
-                                            className='w-full text-4xl'
+                                            className=' mt-0.5 text-4xl'
                                             onClick={toggleBtn}
                                         />
                                         :
                                         <AiFillEye
                                             style={{ cursor: "pointer" }}
-                                            className='w-full text-4xl'
+                                            className=' mt-0.5 text-4xl'
                                             onClick={toggleBtn}
                                         />
                                 }
