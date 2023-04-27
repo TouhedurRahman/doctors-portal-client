@@ -1,9 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useState } from 'react';
 import Loading from '../../Pages/Shared/Loading/Loading';
 import { RiDeleteBin6Line } from 'react-icons/ri';
+import ConfirmationModal from '../../Pages/Shared/ConfirmationModal/ConfirmationModal';
 
 const ManageDoctors = () => {
+    const [deletingDoctor, setDeletingDoctor] = useState(null);
+
+    const closeModal = () => {
+        setDeletingDoctor(null);
+    }
+
     const { data: doctors, isLoading } = useQuery({
         queryKey: ['doctors'],
         queryFn: async () => {
@@ -24,6 +31,10 @@ const ManageDoctors = () => {
 
     if (isLoading) {
         return <Loading></Loading>;
+    }
+
+    const handleDeleteDoctor = (doctor) => {
+        console.log(doctor);
     }
 
     return (
@@ -79,8 +90,15 @@ const ManageDoctors = () => {
                                         <td>{doctor.email}</td>
                                         <td>{doctor.specialty}</td>
                                         <td>
-                                            <div className="flex justify-center items-center">
-                                                <RiDeleteBin6Line className='text-[red]' />
+                                            <div className="flex justify-center items-centerr">
+                                                <label
+                                                    htmlFor="confirmation-modal"
+                                                    onClick={() => setDeletingDoctor(doctor)}
+                                                >
+                                                    <RiDeleteBin6Line
+                                                        className='text-[red]'
+                                                    />
+                                                </label>
                                             </div>
                                         </td>
                                     </tr>
@@ -89,6 +107,17 @@ const ManageDoctors = () => {
                     </tbody>
                 </table>
             </div>
+            {
+                deletingDoctor
+                &&
+                <ConfirmationModal
+                    title={`Are you sure to delete?`}
+                    message={`If you delete ${deletingDoctor.name}. It can't be undone.`}
+                    modalData={deletingDoctor}
+                    successAction={handleDeleteDoctor}
+                    closeModal={closeModal}
+                ></ConfirmationModal>
+            }
         </div>
     );
 };

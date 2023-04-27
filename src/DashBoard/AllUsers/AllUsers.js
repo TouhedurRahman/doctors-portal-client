@@ -1,9 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { RiDeleteBin6Line } from 'react-icons/ri';
+import ConfirmationModal from '../../Pages/Shared/ConfirmationModal/ConfirmationModal';
 
 const AllUsers = () => {
+    const [deletingUser, setDeletingUser] = useState(null);
+
+    const closeModal = () => {
+        setDeletingUser(null);
+    }
+
     const { data: users = [], refetch } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
@@ -28,6 +35,10 @@ const AllUsers = () => {
                     refetch();
                 }
             })
+    }
+
+    const handleDeleteUser = data => {
+        console.log(data);
     }
 
     return (
@@ -84,8 +95,15 @@ const AllUsers = () => {
 
                                     </td>
                                     <td>
-                                        <div className="flex justify-center items-center">
-                                            <RiDeleteBin6Line className='text-[red]' />
+                                        <div className="flex justify-center items-centerr">
+                                            <label
+                                                htmlFor="confirmation-modal"
+                                                onClick={() => setDeletingUser(user)}
+                                            >
+                                                <RiDeleteBin6Line
+                                                    className='text-[red]'
+                                                />
+                                            </label>
                                         </div>
                                     </td>
                                 </tr>)
@@ -93,6 +111,17 @@ const AllUsers = () => {
                     </tbody>
                 </table>
             </div>
+            {
+                deletingUser
+                &&
+                <ConfirmationModal
+                    title={`Are you sure to delete?`}
+                    message={`If you delete ${deletingUser.name}. It can't be undone.`}
+                    modalData={deletingUser}
+                    successAction={handleDeleteUser}
+                    closeModal={closeModal}
+                ></ConfirmationModal>
+            }
         </div>
     );
 };
