@@ -37,8 +37,20 @@ const AllUsers = () => {
             })
     }
 
-    const handleDeleteUser = data => {
-        console.log(data);
+    const handleDeleteUser = user => {
+        fetch(`http://localhost:5000/users/${user._id}`, {
+            method: 'DELETE',
+            headers: {
+                authorization: `bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+            .then(res => res.json())
+            .then(user => {
+                if (user.deletedCount > 0) {
+                    refetch();
+                    toast.success(`${user.name} deleted successfully!`);
+                }
+            })
     }
 
     return (
