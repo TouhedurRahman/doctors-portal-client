@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Loading from '../../Pages/Shared/Loading/Loading';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import ConfirmationModal from '../../Pages/Shared/ConfirmationModal/ConfirmationModal';
+import { toast } from 'react-hot-toast';
 
 const ManageDoctors = () => {
     const [deletingDoctor, setDeletingDoctor] = useState(null);
@@ -11,7 +12,7 @@ const ManageDoctors = () => {
         setDeletingDoctor(null);
     }
 
-    const { data: doctors, isLoading } = useQuery({
+    const { data: doctors, isLoading, refetch } = useQuery({
         queryKey: ['doctors'],
         queryFn: async () => {
             try {
@@ -33,8 +34,20 @@ const ManageDoctors = () => {
         return <Loading></Loading>;
     }
 
-    const handleDeleteDoctor = (doctor) => {
-        console.log(doctor);
+    const handleDeleteDoctor = doctor => {
+        fetch(`http://localhost:5000/doctors/${doctor._id}`, {
+            method: 'DELETE',
+            headers: {
+                authorization: `bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.deletedCount > 0) {
+                    refetch();
+                    toast.success(`${doctor.name} deleted successfully!`);
+                }
+            })
     }
 
     return (

@@ -38,7 +38,6 @@ const AddDoctor = () => {
             .then(res => res.json())
             .then(imgData => {
                 if (imgData.success) {
-                    // console.log(imgData.data.url);
                     const doctor = {
                         name: data.name,
                         email: data.email,
@@ -55,9 +54,10 @@ const AddDoctor = () => {
                     })
                         .then(res => res.json())
                         .then(result => {
-                            console.log(result);
-                            toast.success(`${data.name} is added successfully`);
-                            navigate('/dashboard/managedoctors');
+                            if (result.acknowledged) {
+                                toast.success(`${data.name} is added successfully!`);
+                                navigate('/dashboard/managedoctors');
+                            }
                         })
                 }
             })
