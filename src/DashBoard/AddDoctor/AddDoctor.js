@@ -30,7 +30,7 @@ const AddDoctor = () => {
         const formData = new FormData();
         formData.append('image', image);
 
-        const url = `https://api.imgbb.com/1/upload?expiration=600&key=${imageHostKey}`;
+        const url = `https://api.imgbb.com/1/upload?key=${imageHostKey}`;
         fetch(url, {
             method: 'POST',
             body: formData
@@ -64,76 +64,84 @@ const AddDoctor = () => {
     }
 
     return (
-        <div className='w-96 p-7'>
-            <form onSubmit={handleSubmit(handleAddDoctor)}>
-                <div className="form-control w-full max-w-xs">
-                    <label className="label">
-                        <span className="label-text">Full Name</span>
-                    </label>
-                    <input
-                        type="text"
-                        {...register("name", { required: "Name is required" })}
-                        placeholder="User Name"
-                        className="input input-accent w-full max-w-xs"
-                    />
-                    {
-                        errors.name && <p className='text-red-600'>{errors.name?.message}</p>
-                    }
-                </div>
+        <div>
+            <h3 className='text-3xl text-center text-primary font-bold m-5'>
+                <i>
+                    Add Doctors_
+                </i>
+            </h3>
 
-                <div className="form-control w-full max-w-xs">
-                    <label className="label">
-                        <span className="label-text">Email</span>
-                    </label>
-                    <input
-                        type="email"
-                        {...register("email", { required: "Email Address is required" })}
-                        placeholder="user@gmail.com"
-                        className="input input-accent w-full max-w-xs"
-                    />
-                    {
-                        errors.email && <p className='text-red-600'>{errors.email?.message}</p>
-                    }
-                </div>
-
-                <div className="form-control w-full max-w-xs">
-                    <label className="label">
-                        <span className="label-text">Specialty</span>
-                    </label>
-                    <select
-                        className="select select-bordered w-full max-w-xs"
-                        {...register("specialty", { required: "Photo is required" })}
-                    >
-                        <option disabled defaultValue>Pick a Specialty</option>
+            <div className='w-96 p-7 pt-0 mx-auto'>
+                <form onSubmit={handleSubmit(handleAddDoctor)}>
+                    <div className="form-control w-full max-w-xs">
+                        <label className="label">
+                            <span className="label-text">Full Name</span>
+                        </label>
+                        <input
+                            type="text"
+                            {...register("name", { required: "Name is required" })}
+                            placeholder="User Name"
+                            className="input input-accent w-full max-w-xs"
+                        />
                         {
-                            specialties.map(specialty =>
-                                <option
-                                    key={specialty._id}
-                                    value={specialty.name}
-                                >
-                                    {specialty.name}
-                                </option>
-                            )
+                            errors.name && <p className='text-red-600'>{errors.name?.message}</p>
                         }
-                    </select>
-                </div>
+                    </div>
 
-                <div className="form-control w-full max-w-xs mb-5">
-                    <label className="label">
-                        <span className="label-text">Photo</span>
-                    </label>
-                    <input
-                        type="file"
-                        {...register("img", { required: "Photo is required" })}
-                        className="w-full max-w-xs"
-                    />
-                    {
-                        errors.img && <p className='text-red-600'>{errors.img?.message}</p>
-                    }
-                </div>
+                    <div className="form-control w-full max-w-xs">
+                        <label className="label">
+                            <span className="label-text">Email</span>
+                        </label>
+                        <input
+                            type="email"
+                            {...register("email", { required: "Email Address is required" })}
+                            placeholder="user@gmail.com"
+                            className="input input-accent w-full max-w-xs"
+                        />
+                        {
+                            errors.email && <p className='text-red-600'>{errors.email?.message}</p>
+                        }
+                    </div>
 
-                <input type="submit" className='btn btn-accent text-white w-full' value='Add Doctor' />
-            </form>
+                    <div className="form-control w-full max-w-xs">
+                        <label className="label">
+                            <span className="label-text">Specialty</span>
+                        </label>
+                        <select
+                            className="select select-bordered w-full max-w-xs"
+                            {...register("specialty", { required: "Photo is required" })}
+                        >
+                            <option disabled defaultValue>Pick a Specialty</option>
+                            {
+                                specialties.map(specialty =>
+                                    <option
+                                        key={specialty._id}
+                                        value={specialty.name}
+                                    >
+                                        {specialty.name}
+                                    </option>
+                                )
+                            }
+                        </select>
+                    </div>
+
+                    <div className="form-control w-full max-w-xs mb-5">
+                        <label className="label">
+                            <span className="label-text">Photo</span>
+                        </label>
+                        <input
+                            type="file"
+                            {...register("img", { required: "Photo is required" })}
+                            className="w-full max-w-xs"
+                        />
+                        {
+                            errors.img && <p className='text-red-600'>{errors.img?.message}</p>
+                        }
+                    </div>
+
+                    <input type="submit" className='btn btn-accent text-white w-full' value='Add Doctor' />
+                </form>
+            </div>
         </div>
     );
 };

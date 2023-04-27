@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { toast } from 'react-hot-toast';
-import { AiFillDelete } from 'react-icons/ai';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 
 const AllUsers = () => {
     const { data: users = [], refetch } = useQuery({
@@ -32,7 +32,11 @@ const AllUsers = () => {
 
     return (
         <div>
-            <h3 className='text-3xl text-center text-primary font-bold m-5'><i>All Users</i></h3>
+            <h3 className='text-3xl text-center text-primary font-bold m-5'>
+                <i>
+                    All Users_
+                </i>
+            </h3>
             <div className="overflow-x-auto">
                 <table className="table w-full">
                     <thead>
@@ -48,7 +52,15 @@ const AllUsers = () => {
                         {
                             users.map((user, i) =>
                                 <tr key={user._id}>
-                                    <th className='text-center'>{i + 1}</th>
+                                    <th className='text-center'>
+                                        {
+                                            `${i + 1}` < 10
+                                                ?
+                                                `0${i + 1}`
+                                                :
+                                                `${i + 1}`
+                                        }
+                                    </th>
                                     <td>{user.name}</td>
                                     <td>{user.email}</td>
                                     <td className="flex justify-center items-center">
@@ -73,7 +85,7 @@ const AllUsers = () => {
                                     </td>
                                     <td>
                                         <div className="flex justify-center items-center">
-                                            <AiFillDelete></AiFillDelete>
+                                            <RiDeleteBin6Line className='text-[red]' />
                                         </div>
                                     </td>
                                 </tr>)
